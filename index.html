@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking de Execução Orçamentária - Paraná</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .text-gradient {
+            background-image: linear-gradient(to right, #005f73, #0a9396);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        /* Estilo para o spinner de carregamento */
+        .loader {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #0a9396; /* Blue */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-6 py-12 text-center">
+            <h1 class="text-4xl md:text-6xl font-black text-gradient leading-tight">
+                Ranking de Execução Orçamentária
+            </h1>
+            <p class="text-xl md:text-2xl mt-4 font-semibold text-gray-700">Estado do Paraná</p>
+            <p class="mt-2 text-lg text-gray-600 max-w-3xl mx-auto">Fortalecendo a transparência e a eficiência na aplicação dos recursos públicos através de uma análise de dados robusta e objetiva.</p>
+            <div class="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-sky-50 p-6 rounded-xl border border-sky-200">
+                    <p class="text-5xl font-extrabold text-[#0a9396]">15</p>
+                    <p class="mt-2 text-lg font-semibold text-gray-700">Indicadores-Chave</p>
+                </div>
+                <div class="bg-sky-50 p-6 rounded-xl border border-sky-200">
+                    <p class="text-5xl font-extrabold text-[#0a9396]">4</p>
+                    <p class="mt-2 text-lg font-semibold text-gray-700">Eixos de Análise</p>
+                </div>
+                <div class="bg-sky-50 p-6 rounded-xl border border-sky-200">
+                    <p class="text-5xl font-extrabold text-[#0a9396]">100%</p>
+                    <p class="mt-2 text-lg font-semibold text-gray-700">Foco em Melhoria Contínua</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-16">
+        <section id="o-que-e">
+            <h2 class="text-3xl font-bold text-center text-gray-800">O Que é o Ranking?</h2>
+            <p class="mt-4 text-center max-w-4xl mx-auto text-gray-600">
+                O Ranking de Execução Orçamentária é uma ferramenta técnica desenvolvida pela Secretaria da Fazenda do Paraná para monitorar, avaliar e incentivar a eficiência na gestão do orçamento público. Ele promove a comparabilidade e a responsabilidade entre as diversas unidades orçamentárias do estado, fornecendo uma base de dados confiável para aprimorar a qualidade do gasto e fortalecer as políticas públicas.
+            </p>
+            <div class="mt-12">
+                 <div class="flex flex-col md:flex-row justify-center items-center gap-4 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow-md border w-full md:w-1/5">
+                        <p class="text-2xl mb-2">📊</p>
+                        <h3 class="font-bold text-[#005f73]">1. Coleta de Dados</h3>
+                        <p class="text-sm text-gray-500 mt-1">Extração de dados financeiros brutos.</p>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-300 transform rotate-90 md:rotate-0">→</div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border w-full md:w-1/5">
+                        <p class="text-2xl mb-2">🧮</p>
+                        <h3 class="font-bold text-[#005f73]">2. Cálculo de Indicadores</h3>
+                        <p class="text-sm text-gray-500 mt-1">Aplicação das 15 fórmulas de desempenho.</p>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-300 transform rotate-90 md:rotate-0">→</div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border w-full md:w-1/5">
+                         <p class="text-2xl mb-2">⚖️</p>
+                        <h3 class="font-bold text-[#005f73]">3. Ponderação</h3>
+                        <p class="text-sm text-gray-500 mt-1">Atribuição de pesos estratégicos.</p>
+                    </div>
+                    <div class="text-2xl font-bold text-gray-300 transform rotate-90 md:rotate-0">→</div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border w-full md:w-1/5">
+                         <p class="text-2xl mb-2">🏆</p>
+                        <h3 class="font-bold text-[#005f73]">4. Geração do Ranking</h3>
+                        <p class="text-sm text-gray-500 mt-1">Classificação final das unidades.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="pilares">
+            <h2 class="text-3xl font-bold text-center text-gray-800">Os 4 Pilares da Avaliação</h2>
+             <p class="mt-4 text-center max-w-4xl mx-auto text-gray-600">
+                O desempenho é medido através de quatro eixos estratégicos, cada um com um peso diferente na nota final. Esta proposta atribui um peso igual de 25% a cada eixo, buscando um equilíbrio entre as dimensões da gestão orçamentária.
+            </p>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-6 rounded-lg shadow-lg border">
+                    <div class="chart-container h-[350px] md:h-[400px]">
+                        <canvas id="axisWeightsChart"></canvas>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <h3 class="font-bold text-[#005f73]">1. Execução (25%)</h3>
+                        <p class="text-sm text-gray-600">Mede a capacidade real de transformar o orçamento autorizado em despesas efetivas, refletindo o sucesso do planejamento.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <h3 class="font-bold text-[#0a9396]">2. Passivos de Exercícios Anteriores (25%)</h3>
+                        <p class="text-sm text-gray-600">Avalia a gestão de compromissos herdados, crucial para a saúde fiscal e a flexibilidade de orçamentos futuros.</p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <h3 class="font-bold text-[#94d2bd]">3. Sustentabilidade Fiscal e Estratégica (25%)</h3>
+                        <p class="text-sm text-gray-600">Analisa a saúde fiscal de longo prazo e a autonomia financeira das unidades em relação ao Tesouro.</p>
+                    </div>
+                     <div class="p-4 bg-white rounded-lg border border-gray-200 shadow-sm">
+                        <h3 class="font-bold text-[#e9d8a6]">4. Créditos Adicionais (25%)</h3>
+                        <p class="text-sm text-gray-600">Reflete a flexibilidade e a necessidade de ajustes no orçamento, podendo indicar falhas no planejamento inicial.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <hr class="my-16 border-gray-200">
+
+        <section id="analise-indicadores">
+            <h2 class="text-3xl font-bold text-center text-gray-800">Análise Detalhada dos Indicadores-Chave</h2>
+             <p class="mt-4 text-center max-w-4xl mx-auto text-gray-600">
+                A performance de cada unidade orçamentária é avaliada através de 15 indicadores específicos. Abaixo, visualizamos o desempenho ilustrativo de algumas unidades em indicadores selecionados de cada eixo.
+            </p>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-lg border">
+                    <h3 class="text-xl font-bold text-center text-[#005f73]">Eixo 1: Eficiência na Execução</h3>
+                    <p class="text-sm text-center text-gray-500 mb-4">Comparativo da capacidade de liquidar o orçamento.</p>
+                    <div class="chart-container">
+                        <canvas id="executionChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">Este gráfico compara o percentual do orçamento que foi efetivamente liquidado (gasto realizado) versus o que foi apenas empenhado (compromisso assumido). Um alto índice de liquidação sobre empenhos (verde) indica alta eficiência e concretização dos planos.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg border">
+                    <h3 class="text-xl font-bold text-center text-[#005f73]">Eixo 3: Sustentabilidade Fiscal</h3>
+                    <p class="text-sm text-center text-gray-500 mb-4">Perfil de sustentabilidade de diferentes órgãos.</p>
+                     <div class="chart-container">
+                        <canvas id="sustainabilityChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">O gráfico de radar compara órgãos em dimensões chave da sustentabilidade. Pontuações mais altas em "Independência Financeira" e "Conformidade com LME" são ideais, enquanto uma pontuação baixa em "Pressão sobre o Tesouro" é o objetivo.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg border md:col-span-2">
+                    <h3 class="text-xl font-bold text-center text-[#ae2012]">Indicadores de Alerta: Onde "Menor é Melhor"</h3>
+                     <p class="text-sm text-center text-gray-500 mb-4">Certos indicadores revelam ineficiências quando seus valores são altos.</p>
+                    <div class="chart-container h-[400px] max-h-[500px]">
+                        <canvas id="alertChart"></canvas>
+                    </div>
+                    <p class="mt-4 text-sm text-gray-600">Este gráfico destaca dois indicadores críticos: a **Pressão sobre o Tesouro**, que mede a dependência de recursos centrais, e a **Evitabilidade de Créditos**, que aponta o uso de recursos de superávit quando o orçamento corrente seria suficiente. Em ambos os casos, barras menores indicam uma gestão mais eficiente e um planejamento mais preciso.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="pesos-detalhados">
+            <h2 class="text-3xl font-bold text-center text-gray-800">Pesos Detalhados por Indicador</h2>
+            <p class="mt-4 text-center max-w-4xl mx-auto text-gray-600">
+                Apresentamos a distribuição de pesos para cada um dos 15 indicadores, totalizando 25% em cada eixo principal.
+            </p>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Eixo 1: Execução (25%) -->
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <h4 class="font-bold text-[#005f73] text-lg">Eixo 1: Execução (25%)</h4>
+                    <ul class="mt-2 text-sm text-gray-700 space-y-1">
+                        <li>1.1 Empenho sobre Dotação Atualizada: <span class="font-semibold">8%</span></li>
+                        <li>1.2 Liquidação sobre Dotação Atualizada: <span class="font-semibold">9%</span></li>
+                        <li>1.3 Liquidação sobre Empenhos: <span class="font-semibold">8%</span></li>
+                    </ul>
+                </div>
+                <!-- Eixo 2: Créditos Adicionais (25%) -->
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <h4 class="font-bold text-[#0a9396] text-lg">Eixo 2: Créditos Adicionais (25%)</h4>
+                    <ul class="mt-2 text-sm text-gray-700 space-y-1">
+                        <li>2.1 Expansão Orçamentária: <span class="font-semibold">8%</span></li>
+                        <li>2.2 Execução do Superávit Concedido: <span class="font-semibold">8%</span></li>
+                        <li>2.3 Evitabilidade na Liberação de Créditos com Superávit: <span class="font-semibold">9%</span></li>
+                    </ul>
+                </div>
+                <!-- Eixo 3: Passivos de Exercícios Anteriores (25%) -->
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <h4 class="font-bold text-[#94d2bd] text-lg">Eixo 3: Passivos de Exercícios Anteriores (25%)</h4>
+                    <ul class="mt-2 text-sm text-gray-700 space-y-1">
+                        <li>3.1 Inscrição em Restos a Pagar: <span class="font-semibold">8%</span></li>
+                        <li>3.2 Cancelamento de Restos a Pagar: <span class="font-semibold">4%</span></li>
+                        <li>3.3 Pagamento dos Restos a Pagar: <span class="font-semibold">8%</span></li>
+                        <li>3.4 Impacto de Despesas de Exercícios Anteriores: <span class="font-semibold">5%</span></li>
+                    </ul>
+                </div>
+                <!-- Eixo 4: Sustentabilidade Fiscal e Estratégica (25%) -->
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+                    <h4 class="font-bold text-[#e9d8a6] text-lg">Eixo 4: Sustentabilidade Fiscal e Estratégica (25%)</h4>
+                    <ul class="mt-2 text-sm text-gray-700 space-y-1">
+                        <li>4.1 Pressão sobre Tesouro (Fontes Substituídas): <span class="font-semibold">10%</span></li>
+                        <li>4.2 Conformidade com o LME Finalístico: <span class="font-semibold">5%</span></li>
+                        <li>4.3 Remanejamento Interno Sem Acréscimo: <span class="font-semibold">5%</span></li>
+                        <li>4.4 Execução Estratégica de Recursos Próprios e Vinculados: <span class="font-semibold">2.5%</span></li>
+                        <li>4.5 Independência Financeira: <span class="font-semibold">2.5%</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+        
+        <section id="regras">
+            <h2 class="text-3xl font-bold text-center text-gray-800">Regras do Jogo: Qualidade e Punição</h2>
+            <p class="mt-4 text-center max-w-4xl mx-auto text-gray-600">
+                Para garantir a integridade e a justiça do ranking, o sistema é baseado em princípios de qualidade rigorosos e critérios de punição claros para desempenho insuficiente.
+            </p>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-lg shadow-lg border border-red-200">
+                    <h3 class="text-2xl font-bold text-center text-[#ae2012]">⚠️ Critérios de Punição</h3>
+                    <ul class="mt-6 space-y-4 text-left">
+                        <li class="flex items-start">
+                            <span class="text-red-500 font-bold mr-3">❌</span>
+                            <span><strong class="text-gray-700">Baixa Execução:</strong> Unidades com execução inferior a um limite mínimo (ex: 60%) podem ser penalizadas.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-500 font-bold mr-3">❌</span>
+                            <span><strong class="text-gray-700">Saldo Elevado:</strong> Apresentar saldo disponível superior a um teto (ex: 30%) pode indicar falha no planejamento ou execução.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-red-500 font-bold mr-3">❌</span>
+                            <span><strong class="text-gray-700">Redução de Nota:</strong> A nota geral do órgão pode ser reduzida caso uma de suas unidades subordinadas tenha um desempenho abaixo do mínimo.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg border border-green-200">
+                     <h3 class="text-2xl font-bold text-center text-[#005f73]">✅ Princípios de Qualidade</h3>
+                     <ul class="mt-6 space-y-4 text-left">
+                        <li class="flex items-start">
+                            <span class="text-green-500 font-bold mr-3">✔</span>
+                            <span><strong class="text-gray-700">Transparência Total:</strong> Metodologia e cálculos completamente documentados e abertos.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 font-bold mr-3">✔</span>
+                            <span><strong class="text-gray-700">Reprodutibilidade:</strong> Cálculos realizados com scripts abertos (em R) para garantir a verificação por terceiros.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 font-bold mr-3">✔</span>
+                            <span><strong class="text-gray-700">Legitimidade:</strong> Validação institucional ampla para consolidar a confiança e a aceitação do ranking.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-16 border-gray-200">
+
+        <section id="gemini-insights">
+            <h2 class="text-3xl font-bold text-center text-gray-800">Insights Estratégicos ✨</h2>
+            <p class="mt-4 text-center max-w-4xl mx-auto text-gray-600">
+                Utilize a inteligência artificial para obter sugestões estratégicas e práticas sobre como um órgão público pode melhorar seu desempenho na execução orçamentária.
+            </p>
+            <div class="mt-8 text-center">
+                <button id="generateInsightsBtn" class="bg-[#0a9396] hover:bg-[#005f73] text-white font-bold py-3 px-6 rounded-lg shadow-md transition-all duration-300 ease-in-out transform hover:scale-105">
+                    Gerar Sugestões de Melhoria ✨
+                </button>
+                <div id="loadingIndicator" class="loader hidden"></div>
+                <div id="insightsOutput" class="mt-8 p-6 bg-white rounded-lg shadow-lg border border-gray-200 text-left hidden">
+                    <h3 class="text-xl font-bold text-[#005f73] mb-4">Sugestões Geradas:</h3>
+                    <div id="insightsContent" class="prose max-w-none text-gray-700"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#005f73] text-white mt-16">
+        <div class="container mx-auto px-6 py-8 text-center">
+            <p class="font-bold text-lg">Um compromisso com a gestão pública de excelência.</p>
+            <p class="mt-2 text-sm opacity-80">Fonte: Secretaria da Fazenda do Estado do Paraná (SEFA). Dados ilustrativos teste carol 15 de julho de 2025.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const wrapLabel = (label, maxWidth) => {
+                const words = label.split(' ');
+                let lines = [];
+                let currentLine = words[0];
+
+                for (let i = 1; i < words.length; i++) {
+                    if (currentLine.length + words[i].length + 1 < maxWidth) {
+                        currentLine += ' ' + words[i];
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = words[i];
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            };
+            
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const commonChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                family: 'Inter',
+                            },
+                             color: '#374151'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        },
+                        titleFont: {
+                            family: 'Inter',
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                             family: 'Inter'
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                             color: '#4b5563',
+                             font: { family: 'Inter' }
+                        },
+                        grid: {
+                            color: '#e5e7eb'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                             color: '#4b5563',
+                             font: { family: 'Inter' }
+                        },
+                         grid: {
+                            display: false
+                        }
+                    }
+                }
+            };
+            
+            const axisWeightsCtx = document.getElementById('axisWeightsChart').getContext('2d');
+            new Chart(axisWeightsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Execução', 'Passivos de Exercícios Anteriores', 'Sustentabilidade Fiscal', 'Créditos Adicionais'],
+                    datasets: [{
+                        label: 'Peso do Eixo',
+                        data: [25, 25, 25, 25],
+                        backgroundColor: ['#005f73', '#0a9396', '#94d2bd', '#e9d8a6'],
+                        borderColor: '#ffffff',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    ...commonChartOptions,
+                    cutout: '60%',
+                     scales: {
+                        y: { display: false },
+                        x: { display: false }
+                    }
+                }
+            });
+
+            const executionCtx = document.getElementById('executionChart').getContext('2d');
+            new Chart(executionCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Secretaria A', 'Autarquia B', 'Fundação C', 'Secretaria D'],
+                    datasets: [{
+                        label: 'Liquidação / Dotação',
+                        data: [85, 92, 78, 88],
+                        backgroundColor: '#0a9396',
+                        borderColor: '#0a9396',
+                        borderWidth: 1
+                    }, {
+                        label: 'Liquidação / Empenho',
+                        data: [95, 96, 91, 94],
+                        backgroundColor: '#94d2bd',
+                        borderColor: '#94d2bd',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                     ...commonChartOptions,
+                     scales: {
+                         y: {
+                             beginAtZero: true,
+                             max: 100,
+                             ticks: {
+                                 callback: function(value) { return value + "%" }
+                             }
+                         }
+                     }
+                }
+            });
+
+            const sustainabilityCtx = document.getElementById('sustainabilityChart').getContext('2d');
+            const sustainabilityLabels = [
+                'Independência Financeira (4.5)',
+                'Conformidade com LME (4.2)',
+                'Execução Estratégica (4.4)',
+                'Pressão sobre o Tesouro (4.1)',
+                'Remanejamento Interno (4.3)'
+            ].map(label => wrapLabel(label, 16));
+
+            new Chart(sustainabilityCtx, {
+                type: 'radar',
+                data: {
+                    labels: sustainabilityLabels,
+                    datasets: [{
+                        label: 'Órgão de Alta Performance',
+                        data: [8.5, 9.5, 8, 2.5, 7],
+                        backgroundColor: 'rgba(10, 147, 150, 0.2)',
+                        borderColor: '#0a9396',
+                        pointBackgroundColor: '#0a9396',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#0a9396'
+                    }, {
+                        label: 'Órgão com Desafios',
+                        data: [4, 6, 5, 8, 9],
+                        backgroundColor: 'rgba(238, 155, 0, 0.2)',
+                        borderColor: '#ee9b00',
+                        pointBackgroundColor: '#ee9b00',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#ee9b00'
+                    }]
+                },
+                options: {
+                    ...commonChartOptions,
+                    scales: {
+                       r: {
+                            angleLines: { color: '#e5e7eb' },
+                            grid: { color: '#e5e7eb' },
+                            pointLabels: { 
+                                font: { size: 10, family: 'Inter' },
+                                color: '#374151'
+                            },
+                            ticks: {
+                                backdropColor: 'transparent',
+                                color: '#4b5563'
+                            },
+                            min: 0,
+                            max: 10
+                       }
+                    }
+                }
+            });
+            
+            const alertCtx = document.getElementById('alertChart').getContext('2d');
+            const alertLabels = [
+                'Secretaria Z', 'Autarquia Y', 'Fundação X', 
+                'Secretaria W', 'Autarquia V', 'Fundação U'
+            ];
+            new Chart(alertCtx, {
+                type: 'bar',
+                data: {
+                    labels: alertLabels,
+                    datasets: [
+                        {
+                            label: 'Pressão sobre Tesouro (4.1)',
+                            data: [85, 72, 65, 41, 35, 15],
+                             backgroundColor: '#ca6702',
+                        },
+                         {
+                            label: 'Evitabilidade na Lib. de Créditos (2.3)',
+                            data: [78, 68, 55, 30, 25, 12],
+                             backgroundColor: '#ee9b00',
+                        }
+                    ]
+                },
+                options: {
+                    ...commonChartOptions,
+                    indexAxis: 'y',
+                    scales: {
+                         x: {
+                             beginAtZero: true,
+                             ticks: {
+                                 callback: function(value) { return value + "%" }
+                             }
+                         }
+                    }
+                }
+            });
+
+            // Gemini API Integration
+            const generateInsightsBtn = document.getElementById('generateInsightsBtn');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const insightsOutput = document.getElementById('insightsOutput');
+            const insightsContent = document.getElementById('insightsContent');
+
+            generateInsightsBtn.addEventListener('click', async () => {
+                insightsOutput.classList.add('hidden'); // Hide previous output
+                loadingIndicator.classList.remove('hidden'); // Show loading spinner
+                generateInsightsBtn.disabled = true; // Disable button during loading
+
+                const prompt = `Dado o contexto de um Ranking de Execução Orçamentária que avalia órgãos públicos com base em:
+                1. Execução Orçamentária: Eficiência em liquidar dotações e empenhos.
+                2. Créditos Adicionais: Gestão de alterações orçamentárias e uso de superávit (onde alta evitabilidade é um problema).
+                3. Passivos de Exercícios Anteriores: Gestão de restos a pagar (onde alta inscrição e cancelamento são problemas).
+                4. Sustentabilidade Fiscal e Estratégica: Dependência do Tesouro (onde alta pressão é um problema) e conformidade.
+
+                Gere 5 sugestões estratégicas e práticas para um órgão público melhorar seu desempenho neste ranking, focando em otimização de recursos e redução de ineficiências. As sugestões devem ser claras e acionáveis, formatadas como uma lista numerada.`;
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = ""; // Leave this as-is; Canvas will provide the key at runtime.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        insightsContent.innerHTML = text.replace(/\n/g, '<br>'); // Display response, convert newlines to <br>
+                        insightsOutput.classList.remove('hidden'); // Show output area
+                    } else {
+                        insightsContent.innerHTML = '<p class="text-red-500">Erro ao gerar sugestões. Tente novamente.</p>';
+                        insightsOutput.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error('Erro ao chamar a API Gemini:', error);
+                    insightsContent.innerHTML = '<p class="text-red-500">Ocorreu um erro ao conectar com a IA. Por favor, tente novamente mais tarde.</p>';
+                    insightsOutput.classList.remove('hidden');
+                } finally {
+                    loadingIndicator.classList.add('hidden'); // Hide loading spinner
+                    generateInsightsBtn.disabled = false; // Re-enable button
+                }
+            });
+        });
+    </script>
+</body>
+</html>
